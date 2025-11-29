@@ -123,3 +123,7 @@ InitTestScene*.unity*
 # Gradle
 .idea/**/gradle.xml
 .idea/**/libraries
+
+indexLayout.xml
+vcs.xml
+projectSettingsUpdater.xml
