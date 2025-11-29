@@ -224,7 +224,8 @@ public class PlayerMovement : MonoBehaviour
 
         _rb.velocity = dashDir * _dashSpeed;
 
-        if (_isSwinging) StopGrapple(); 
+        if (_isSwinging) 
+            StopGrapple(); 
 
         yield return new WaitForSeconds(_dashDuration);
         
@@ -281,7 +282,7 @@ public class PlayerMovement : MonoBehaviour
 
     void FindBestHook() {
         Collider2D[] hooks = Physics2D.OverlapCircleAll(transform.position, _scanRadius, _hookLayer);
-        float closestDistance = Mathf.Infinity; 
+        float closestDistance = 100000f; 
         Transform bestTarget = null;
         foreach (var hook in hooks) 
         {
@@ -340,8 +341,11 @@ public class PlayerMovement : MonoBehaviour
         
         if (_currentBestHook != null) 
         {
-            _momentumMode = true; _rb.drag = _momentumDrag; _grapplePoint = _currentBestHook.position;
-            _ropeStartPosition = transform.position; _ropeFlightTimeElapsed = 0f;
+            _momentumMode = true; 
+            _rb.drag = _momentumDrag; 
+            _grapplePoint = _currentBestHook.position;
+            _ropeStartPosition = transform.position; 
+            _ropeFlightTimeElapsed = 0f;
             _isGrapplingRope = true;
             _lineRenderer.enabled = true; 
             _lineRenderer.SetPosition(0, _ropeStartPosition); 

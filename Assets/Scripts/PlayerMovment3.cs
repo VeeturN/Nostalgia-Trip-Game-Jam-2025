@@ -1,7 +1,9 @@
 using System.Collections; 
 using UnityEngine;
 
-public class PlayerMovementAddForce : MonoBehaviour
+
+
+public class PlayerMovement3 : MonoBehaviour
 {
     [Header("Ustawienia Gracza")]
     
@@ -12,15 +14,12 @@ public class PlayerMovementAddForce : MonoBehaviour
     [SerializeField] private string _grappleButton = "Fire1_P1";       
     [SerializeField] private string _dashButton = "Fire2_P1"; 
 
-    [Header("Ruch Fizyczny (AddForce)")]
-    [SerializeField] private float _maxMoveSpeed = 8f;      // Maksymalna prędkość biegu
-    [SerializeField] private float _acceleration = 60f;     // Jak szybko się rozpędza (Siła)
-    [SerializeField] private float _groundLinearDrag = 10f; // Hamowanie na ziemi (Tarcie)
-    [SerializeField] private float _airLinearDrag = 2f;     // Hamowanie w powietrzu
+    [Header("Mario Mode (Ziemia)")]
+    [SerializeField] private float _moveSpeed = 8f;
     [SerializeField] private float _jumpForce = 15f;
 
-    [Header("Dash (Zryw - Impulse)")]
-    [SerializeField] private float _dashForce = 20f;      // Siła dasha (teraz jako Impuls)
+    [Header("Dash (Zryw)")]
+    [SerializeField] private float _dashSpeed = 25f;     
     [SerializeField] private float _dashDuration = 0.2f; 
     
     [Header("Wall Mechanics (Ściany)")]
@@ -98,17 +97,13 @@ public class PlayerMovementAddForce : MonoBehaviour
 
         _rb.freezeRotation = true; 
         _defaultGravity = _rb.gravityScale; 
-        
-        // Zwiększamy masę dla lepszej stabilności fizyki, jeśli potrzebne, 
-        // ale standardowo 1 jest ok przy tych wartościach sił.
     }
 
     void Start()
     {
         _ropeJoint.enabled = false;
         _lineRenderer.enabled = false;
-        _defaultDrag = 0f; // Ustawiamy na 0, bo sami liczymy Drag
-        _rb.drag = 0f;
+        _defaultDrag = _rb.drag; 
         
         _aimReticle.SetActive(false);
     }
@@ -148,7 +143,7 @@ public class PlayerMovementAddForce : MonoBehaviour
         if (_isGrounded && !_isSwinging && !_isGrapplingRope)
         {
             _momentumMode = false;
-            // Tutaj nie resetujemy draga Rigidbody, bo używamy własnego systemu draga
+            _rb.drag = _defaultDrag;
             _canDash = true; 
         }
         
@@ -203,21 +198,7 @@ public class PlayerMovementAddForce : MonoBehaviour
         else
         {
             HandleWallLogic();
-            HandleGroundMovement(); // To teraz używa AddForce
-            ApplyLinearDrag();      // To hamuje postać, gdy nie ma inputu
-        }
-    }
-
-    // Nowa funkcja do hamowania (zamiast rb.drag, który psuje grawitację)
-    void ApplyLinearDrag()
-    {
-        // Hamujemy tylko po osi X, żeby nie spowalniać spadania (grawitacji)
-        if (Mathf.Abs(_horizontalInput) < 0.4f || (_horizontalInput != 0 && Mathf.Sign(_horizontalInput) != Mathf.Sign(_rb.velocity.x)))
-        {
-            float drag = _isGrounded ? _groundLinearDrag : _airLinearDrag;
-            
-            // Aplikujemy siłę przeciwną do prędkości
-            _rb.AddForce(new Vector2(-_rb.velocity.x * drag, 0));
+            HandleGroundMovement();
         }
     }
 
@@ -228,8 +209,6 @@ public class PlayerMovementAddForce : MonoBehaviour
         
         float originalGravity = _rb.gravityScale;
         _rb.gravityScale = 0f; 
-        
-        // Reset prędkości przed dashem dla spójności, albo dodajemy do obecnej
         _rb.velocity = Vector2.zero; 
         
         Vector2 dashDir;
@@ -242,8 +221,7 @@ public class PlayerMovementAddForce : MonoBehaviour
             dashDir = new Vector2(_horizontalInput, _verticalInput).normalized;
         }
 
-        // ZMIANA: Używamy AddForce Impulse zamiast ustawiania velocity
-        _rb.AddForce(dashDir * _dashForce, ForceMode2D.Impulse);
+        _rb.velocity = dashDir * _dashSpeed;
 
         if (_isSwinging) StopGrapple(); 
 
@@ -251,27 +229,20 @@ public class PlayerMovementAddForce : MonoBehaviour
         
         _rb.gravityScale = originalGravity; 
         _isDashing = false;
+        
         _momentumMode = false; 
-        // Po dashu zerujemy velocity, żeby nie leciał dalej siłą rozpędu (chyba że wolisz inaczej)
+        _rb.drag = _defaultDrag; 
+        
         _rb.velocity = Vector2.zero; 
     }
 
     void HandleWallLogic() {
         bool pushingWall = (_wallDirection == 1 && _horizontalInput > 0) || (_wallDirection == -1 && _horizontalInput < 0);
-        
-        // Zmienione: logika zjeżdżania też na siłach lub limicie prędkości
         if (_isTouchingWall && !_isGrounded && _rb.velocity.y < 0 && pushingWall) 
         {
-            _isWallSliding = true; 
-            _momentumMode = false;
-            
-            // Jeśli spadamy za szybko przy ścianie, hamujemy siłą przeciwną do grawitacji
-            if (_rb.velocity.y < -_wallSlideSpeed) 
-            {
-                // Zamiast ustawiać velocity, dodajemy siłę w górę równoważącą grawitację
-                // Ale dla prostoty w tym miejscu "clamp" velocity jest bezpieczniejszy dla stabilności
-                _rb.velocity = new Vector2(_rb.velocity.x, -_wallSlideSpeed);
-            }
+            _isWallSliding = true; _momentumMode = false;
+                if (_rb.velocity.y < -_wallSlideSpeed) 
+                    _rb.velocity = new Vector2(_rb.velocity.x, -_wallSlideSpeed);
         }
         else
         {
@@ -282,15 +253,10 @@ public class PlayerMovementAddForce : MonoBehaviour
     }
 
     void PerformWallJump() {
-        // Resetujemy prędkość, żeby skok był zawsze taki sam niezależnie od spadania
         _rb.velocity = Vector2.zero; 
-        
         float jumpDir = -_wallDirection;
         Vector2 force = new Vector2(_wallJumpForce.x * jumpDir, _wallJumpForce.y);
-        
-        // Wall Jump już był na AddForce (Impulse)
         _rb.AddForce(force, ForceMode2D.Impulse);
-        
         _wallJumpInputTimer = _wallJumpStopInputTime;
         _jumpRequest = false;
         _momentumMode = false;
@@ -299,26 +265,11 @@ public class PlayerMovementAddForce : MonoBehaviour
     void HandleGroundMovement() {
         if (_wallJumpInputTimer > 0) 
             return;
-
-        // ZMIANA NA ADDFORCE
-        // 1. Dodajemy siłę
-        _rb.AddForce(new Vector2(_horizontalInput * _acceleration, 0));
-
-        // 2. Limitujemy prędkość (Clamp), żeby nie rozpędzał się w nieskończoność
-        if (Mathf.Abs(_rb.velocity.x) > _maxMoveSpeed)
-        {
-            // Zachowujemy obecny znak prędkości, ale ucinamy do max speed
-            _rb.velocity = new Vector2(Mathf.Sign(_rb.velocity.x) * _maxMoveSpeed, _rb.velocity.y);
-        }
+        _rb.velocity = new Vector2(_horizontalInput * _moveSpeed, _rb.velocity.y);
 
         if (_jumpRequest && _isGrounded)
         {
-            // Resetujemy prędkość Y przed skokiem dla spójnej wysokości
-            _rb.velocity = new Vector2(_rb.velocity.x, 0);
-            
-            // ZMIANA: Skok to teraz czysty impuls siły
-            _rb.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
-            
+            _rb.velocity = new Vector2(_rb.velocity.x, _jumpForce);
             _jumpRequest = false;
         }
         else
@@ -363,7 +314,6 @@ public class PlayerMovementAddForce : MonoBehaviour
             _rb.AddForce(new Vector2(_horizontalInput * _momentumBrakeForce, 0));
         else if (_horizontalInput != 0) 
             _rb.AddForce(new Vector2(_horizontalInput * _momentumAirControl, 0));
-        
         _rb.velocity = Vector2.ClampMagnitude(_rb.velocity, 30f);
     }
 
@@ -389,11 +339,7 @@ public class PlayerMovementAddForce : MonoBehaviour
         
         if (_currentBestHook != null) 
         {
-            _momentumMode = true; 
-            // W trybie AddForce nie używamy rb.drag do hamowania, więc tu resetujemy lub ustawiamy minimalny
-            _rb.drag = 0f; 
-            
-            _grapplePoint = _currentBestHook.position;
+            _momentumMode = true; _rb.drag = _momentumDrag; _grapplePoint = _currentBestHook.position;
             _ropeStartPosition = transform.position; _ropeFlightTimeElapsed = 0f;
             _isGrapplingRope = true;
             _lineRenderer.enabled = true; 

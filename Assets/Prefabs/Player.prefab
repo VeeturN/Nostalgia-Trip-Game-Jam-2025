@@ -176,7 +176,7 @@ MonoBehaviour:
   horizontalAxis: Horizontal_P1
   verticalAxis: Vertical_P1
   jumpButton: Jump_P1
-  _changeSize: Fire2_P1
+  _changeSize: Fire3_P1
   _defaultSprite: {fileID: 21300000, guid: 3b08b063c0e924573a4d935e833e3fc6, type: 3}
   _pressedSprite: {fileID: 21300000, guid: 7e8f52277f92f47d0af237d8c12523f5, type: 3}
   _newColliderHeight: 1.5
