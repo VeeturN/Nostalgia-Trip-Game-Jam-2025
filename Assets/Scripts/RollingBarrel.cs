@@ -36,16 +36,4 @@ public class RollingBarrel : MonoBehaviour
             rb.AddForce(direction * pushForce, ForceMode2D.Force);
         }
     }
-
-    // void OnCollisionEnter2D(Collision2D collision)
-    // {
-    //     if (collision.gameObject.CompareTag(enemyTag) && rb.velocity.magnitude > killSpeed)
-    //     {
-    //         Destroy(collision.gameObject);
-    //         Debug.Log("Przeciwnik rozjechany!");
-    //         
-    //
-    //         rb.velocity = new Vector2(rb.velocity.x, 3f); 
-    //     }
-    // }
 }

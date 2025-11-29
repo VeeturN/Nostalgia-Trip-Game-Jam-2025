@@ -20,10 +20,10 @@ TagManager:
   - Wall
   - Hook
   - Ledder
-  - 
-  - 
-  - 
-  - 
+  - OnlyPlayer2CanTouch
+  - Player2
+  - OnlyPlayer1CanTouch
+  - Player1
   - 
   - 
   - 

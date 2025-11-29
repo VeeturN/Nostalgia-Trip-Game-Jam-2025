@@ -1,14 +1,16 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(BoxCollider2D))] 
+[RequireComponent(typeof(BoxCollider2D))]
 public class RetroMovement : MonoBehaviour
 {
-    [Header("Ustawienia Ruchu")]
-    public float moveSpeed = 8f;
+    [Header("Ustawienia Ruchu")] public float moveSpeed = 8f;
     public float jumpForce = 15f;
+    [SerializeField] private string horizontalAxis = "Horizontal_P1";
+    [SerializeField] private string verticalAxis = "Vertical_P1";
+    [SerializeField] private string jumpButton = "Jump_P1";
 
-    [Header("Ustawienia Drabiny")]
+[Header("Ustawienia Drabiny")]
     public float climbSpeed = 5f;
     public LayerMask ladderLayer;
 
@@ -46,10 +48,10 @@ public class RetroMovement : MonoBehaviour
     void Update()
     {
 
-        horizontalInput = Input.GetAxisRaw("Horizontal_P1");
-        verticalInput = Input.GetAxisRaw("Vertical_P1"); 
+        horizontalInput = Input.GetAxisRaw(horizontalAxis);
+        verticalInput = Input.GetAxisRaw(verticalAxis); 
         
-        if (Input.GetButtonDown("Jump_P1"))
+        if (Input.GetButtonDown(jumpButton))
         {
             if (isClimbing)
             {
