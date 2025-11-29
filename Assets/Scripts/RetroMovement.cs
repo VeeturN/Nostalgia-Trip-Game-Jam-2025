@@ -2,7 +2,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))] 
-public class RetroMovementRaycast : MonoBehaviour
+public class RetroMovement : MonoBehaviour
 {
     [Header("Ustawienia Ruchu")]
     public float moveSpeed = 8f;
@@ -26,9 +26,14 @@ public class RetroMovementRaycast : MonoBehaviour
     private bool isTouchingLadder;
     private bool isClimbing;
     private float defaultGravity;
+    
+    //COIN 
+    public static int CurrentScore { get; set; }
 
     void Awake()
     {
+        QualitySettings.vSyncCount = 0;  
+        Application.targetFrameRate = 20;
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<BoxCollider2D>();
 
@@ -131,4 +136,6 @@ public class RetroMovementRaycast : MonoBehaviour
             Gizmos.DrawRay(center + Vector2.right * (w * 0.8f), Vector2.down * rayLen);
         }
     }
+    
+    
 }
