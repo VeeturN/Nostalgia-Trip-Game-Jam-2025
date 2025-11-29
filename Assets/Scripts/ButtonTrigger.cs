@@ -3,7 +3,8 @@ using UnityEngine;
 public class PressurePlate : MonoBehaviour
 {
     [Header("Co ma otwierać?")]
-    public GameObject doorObject; 
+    [SerializeField] private bool _OneTime; 
+    [SerializeField] private GameObject doorObject; 
 
     [Header("Wygląd przycisku")]
     public Sprite pressedSprite;  
@@ -21,9 +22,18 @@ public class PressurePlate : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Player on pressure plate");
-            if (doorObject != null) doorObject.SetActive(false);
-            if (pressedSprite != null) mySprite.sprite = pressedSprite;
+            if (_OneTime)
+            {
+                Debug.Log("Player on pressure plate");
+                doorObject.SetActive(false);
+                mySprite.sprite = pressedSprite;
+            }
+            else
+            {
+                Debug.Log("Player on pressure plate");
+                doorObject.SetActive(false);
+                mySprite.sprite = pressedSprite;
+            }
         }
     }
     
@@ -31,8 +41,15 @@ public class PressurePlate : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (doorObject != null) doorObject.SetActive(true);
-            mySprite.sprite = defaultSprite;
+            if (_OneTime)
+            {
+                
+            }
+            else
+            {
+                doorObject.SetActive(true);
+                mySprite.sprite = defaultSprite;
+            }
         }
     }
 }
