@@ -5,6 +5,7 @@ public class ButtonTrigger : MonoBehaviour
     [Header("Co ma otwierać?")]
     [SerializeField] private bool _OneTime; 
     [SerializeField] private GameObject doorObject; 
+    [SerializeField] private bool Reverse;
 
     [Header("Wygląd przycisku")]
     public Sprite pressedSprite;  
@@ -24,15 +25,35 @@ public class ButtonTrigger : MonoBehaviour
         {
             if (_OneTime)
             {
-                Debug.Log("Player on pressure plate");
-                doorObject.SetActive(false);
-                mySprite.sprite = pressedSprite;
+                if (Reverse)
+                {
+                    Debug.Log("Player on pressure plate");
+                    doorObject.SetActive(false);
+                    mySprite.sprite = pressedSprite;
+                }
+                else
+                {
+                    Debug.Log("Player on pressure plate");
+                    doorObject.SetActive(true);
+                    mySprite.sprite = pressedSprite;
+                }
+
+                
             }
             else
             {
-                Debug.Log("Player on pressure plate");
-                doorObject.SetActive(false);
-                mySprite.sprite = pressedSprite;
+                if (Reverse)
+                {
+                    Debug.Log("Player on pressure plate");
+                    doorObject.SetActive(false);
+                    mySprite.sprite = pressedSprite;
+                }
+                else
+                {
+                    Debug.Log("Player on pressure plate");
+                    doorObject.SetActive(true);
+                    mySprite.sprite = pressedSprite;
+                }
             }
         }
     }
@@ -47,8 +68,17 @@ public class ButtonTrigger : MonoBehaviour
             }
             else
             {
-                doorObject.SetActive(true);
-                mySprite.sprite = defaultSprite;
+                if (Reverse)
+                {
+                    doorObject.SetActive(true);
+                    mySprite.sprite = defaultSprite;
+                }
+                else
+                {
+                    doorObject.SetActive(false);
+                    mySprite.sprite = defaultSprite;  
+                }
+                
             }
         }
     }
