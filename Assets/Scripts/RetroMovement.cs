@@ -64,7 +64,18 @@ public class RetroMovement : MonoBehaviour
 
         if (Input.GetButtonDown(_changeSize))
         {
-            col.size = new Vector2(_newColliderHeight, _newColliderWidth);
+            _isSizeChanged = !_isSizeChanged;
+            SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+            if (_isSizeChanged)
+            {
+                col.size = new Vector2(_newColliderHeight, _newColliderWidth);
+                spriteRenderer.sprite = _pressedSprite;
+            }
+            else
+            {
+                col.size = new Vector2(_originalColliderWidth, _originalColliderHeight);
+                spriteRenderer.sprite = _defaultSprite;
+            }
         }
         
         if (Input.GetButtonDown(jumpButton))
