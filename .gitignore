@@ -124,7 +124,6 @@ InitTestScene*.unity*
 .idea/**/gradle.xml
 .idea/**/libraries
 
-
 indexLayout.xml
 vcs.xml
 projectSettingsUpdater.xml
