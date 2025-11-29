@@ -27,6 +27,17 @@ public class RollingBarrel : MonoBehaviour
     void FixedUpdate()
     {
         rb.velocity = Vector2.ClampMagnitude(rb.velocity, maxSpeed);
+        if (RetroMovement.typeplayer == 0)
+        {
+            rb.bodyType = RigidbodyType2D.Dynamic;
+            Debug.Log("DYNAMIC");
+        }
+        else
+        {
+            rb.bodyType = RigidbodyType2D.Static;
+            Debug.Log("STATIC");
+
+        }
     }
     void OnCollisionStay2D(Collision2D collision)
     {

@@ -40,6 +40,7 @@ public class RetroMovement : MonoBehaviour
     
     //COIN 
     public static int CurrentScore { get; set; }
+    public static int typeplayer { get; set; }
 
     void Awake()
     {
@@ -70,11 +71,13 @@ public class RetroMovement : MonoBehaviour
             {
                 col.size = new Vector2(_newColliderHeight, _newColliderWidth);
                 spriteRenderer.sprite = _pressedSprite;
+                typeplayer = 0;
             }
             else
             {
                 col.size = new Vector2(_originalColliderWidth, _originalColliderHeight);
                 spriteRenderer.sprite = _defaultSprite;
+                typeplayer = 1;
             }
         }
         

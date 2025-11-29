@@ -6,6 +6,7 @@ public class Barrel : MonoBehaviour
 {
     private float _destroyTime;
     float timer;
+    private Rigidbody2D rb;
     
     public void Init(float destroyTime)
     {
@@ -15,6 +16,7 @@ public class Barrel : MonoBehaviour
     void Start()
     {
         timer = 0f;
+        rb = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -25,6 +27,7 @@ public class Barrel : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        
     }
     
 }
