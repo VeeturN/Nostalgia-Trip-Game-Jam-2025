@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PressurePlate : MonoBehaviour
+public class ButtonTrigger : MonoBehaviour
 {
     [Header("Co ma otwierać?")]
     [SerializeField] private bool _OneTime; 
