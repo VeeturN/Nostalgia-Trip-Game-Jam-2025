@@ -215,10 +215,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputType: 0
   _horizontalAxis: Horizontal_P1
-  _verticalAxis: Vertical
+  _verticalAxis: Vertical_P1
   _jumpButton: Jump_P1
   _grappleButton: Fire1_P1
-  _dashButton: Fire3
+  _dashButton: Fire2_P1
   _moveSpeed: 8
   _jumpForce: 15
   _dashSpeed: 25

@@ -398,6 +398,10 @@ PrefabInstance:
       value: Jump_P2
       objectReference: {fileID: 0}
     - target: {fileID: 4999235641102228684, guid: e77038ca66a40074a91c39a71b0ed840, type: 3}
+      propertyPath: _changeSize
+      value: Fire2_P2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4999235641102228684, guid: e77038ca66a40074a91c39a71b0ed840, type: 3}
       propertyPath: verticalAxis
       value: Vertical_P2
       objectReference: {fileID: 0}
@@ -611,6 +615,22 @@ PrefabInstance:
     - target: {fileID: 4999235641102228684, guid: e77038ca66a40074a91c39a71b0ed840, type: 3}
       propertyPath: ladderLayer.m_Bits
       value: 1024
+      objectReference: {fileID: 0}
+    - target: {fileID: 7073828411143726425, guid: e77038ca66a40074a91c39a71b0ed840, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: a6295633fd1a6ae4fadf0387bd80cbe8, type: 2}
+    - target: {fileID: 8098961409883790444, guid: e77038ca66a40074a91c39a71b0ed840, type: 3}
+      propertyPath: m_Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8098961409883790444, guid: e77038ca66a40074a91c39a71b0ed840, type: 3}
+      propertyPath: m_Size.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8098961409883790444, guid: e77038ca66a40074a91c39a71b0ed840, type: 3}
+      propertyPath: m_Offset.x
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

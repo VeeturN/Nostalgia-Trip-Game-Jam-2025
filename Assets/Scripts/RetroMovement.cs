@@ -1,7 +1,8 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(BoxCollider2D))]
 public class RetroMovement : MonoBehaviour
 {
     [Header("Ustawienia Ruchu")] public float moveSpeed = 8f;
@@ -9,6 +10,14 @@ public class RetroMovement : MonoBehaviour
     [SerializeField] private string horizontalAxis = "Horizontal_P1";
     [SerializeField] private string verticalAxis = "Vertical_P1";
     [SerializeField] private string jumpButton = "Jump_P1";
+    [SerializeField] private string _changeSize = "Fire2_P1";
+    [SerializeField] private Sprite _defaultSprite;
+    [SerializeField] private Sprite _pressedSprite;
+    [SerializeField] private float _newColliderHeight = 0.5f;
+    [SerializeField] private float _newColliderWidth = 0.5f;
+    private float _originalColliderHeight;
+    private float _originalColliderWidth;
+    private bool _isSizeChanged = false;
 
 [Header("Ustawienia Drabiny")]
     public float climbSpeed = 5f;
@@ -35,7 +44,7 @@ public class RetroMovement : MonoBehaviour
     void Awake()
     {
         QualitySettings.vSyncCount = 0;  
-        Application.targetFrameRate = 20;
+        Application.targetFrameRate = 60;
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<BoxCollider2D>();
 
@@ -43,13 +52,20 @@ public class RetroMovement : MonoBehaviour
         rb.gravityScale = 10f; 
         
         defaultGravity = rb.gravityScale;
+        _originalColliderHeight= col.size.y;
+        _originalColliderWidth= col.size.x;
     }
 
     void Update()
     {
 
         horizontalInput = Input.GetAxisRaw(horizontalAxis);
-        verticalInput = Input.GetAxisRaw(verticalAxis); 
+        verticalInput = Input.GetAxisRaw(verticalAxis);
+
+        if (Input.GetButtonDown(_changeSize))
+        {
+            col.size = new Vector2(_newColliderHeight, _newColliderWidth);
+        }
         
         if (Input.GetButtonDown(jumpButton))
         {

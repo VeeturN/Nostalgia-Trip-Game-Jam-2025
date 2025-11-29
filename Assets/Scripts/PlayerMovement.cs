@@ -9,11 +9,11 @@ public class PlayerMovement : MonoBehaviour
     public InputScheme inputType = InputScheme.KeyboardMouse;
     
     [Header("Input")]
-    [SerializeField] private string _horizontalAxis = "Horizontal"; 
-    [SerializeField] private string _verticalAxis = "Vertical"; 
-    [SerializeField] private string _jumpButton = "Jump";           
-    [SerializeField] private string _grappleButton = "Fire1";       
-    [SerializeField] private string _dashButton = "Fire3"; 
+    [SerializeField] private string _horizontalAxis = "Horizontal_P1"; 
+    [SerializeField] private string _verticalAxis = "Vertical_P1"; 
+    [SerializeField] private string _jumpButton = "Jump_P1";           
+    [SerializeField] private string _grappleButton = "Fire1_P1";       
+    [SerializeField] private string _dashButton = "Fire2_P1"; 
 
     [Header("Mario Mode (Ziemia)")]
     [SerializeField] private float _moveSpeed = 8f;
