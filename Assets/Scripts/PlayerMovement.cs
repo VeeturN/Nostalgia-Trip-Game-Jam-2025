@@ -137,7 +137,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (!_isSwinging && !_isGrapplingRope) 
             FindBestHook();
-        else if(_aimReticle != null) 
+        else
             _aimReticle.SetActive(false);
 
         // RESETOWANIE STANÓW NA ZIEMI
