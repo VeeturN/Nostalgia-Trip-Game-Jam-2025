@@ -856,7 +856,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New game
+  m_text: Start game
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b6cebaf4cc8b04fe1b768f448ed0ca91, type: 2}
   m_sharedMaterial: {fileID: -4952201563073944564, guid: b6cebaf4cc8b04fe1b768f448ed0ca91, type: 2}
@@ -5287,7 +5287,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Banana's Era Switch
+  m_text: Banana's Era Shift
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b6cebaf4cc8b04fe1b768f448ed0ca91, type: 2}
   m_sharedMaterial: {fileID: -4952201563073944564, guid: b6cebaf4cc8b04fe1b768f448ed0ca91, type: 2}
