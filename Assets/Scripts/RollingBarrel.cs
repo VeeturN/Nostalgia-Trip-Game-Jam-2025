@@ -30,7 +30,7 @@ public class RollingBarrel : MonoBehaviour
         if (RetroMovement.typeplayer == 0)
         {
             rb.bodyType = RigidbodyType2D.Dynamic;
-            Debug.Log("DYNAMIC");
+            //Debug.Log("DYNAMIC");
         }
         else
         {

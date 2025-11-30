@@ -37,8 +37,6 @@ public class UIController : MonoBehaviour
     private bool _waitingForAnyButton;
     private System.Action _onAnyButtonPressed;
     
-    private bool _hasSave;
-
     private void Awake()
     {
         if (UIControllerInstance != null && UIControllerInstance != this)
@@ -153,29 +151,7 @@ public class UIController : MonoBehaviour
     
     public void ShowNewGame()
     {
-        if (_hasSave)
-        {
-            AskNewGame();
-        }
-        else
-        {
-            CreateNewGame();
-        }
-    }
-
-    private void CreateNewGame()
-    {
-        // TODO Create new save
-        _hasSave = true;
-        ShowLoadingControls();
-    }
-    
-    public void ShowLoadGame()
-    {
-        if (_hasSave)
-        {
-            ShowLoadingControls();
-        }
+        ShowGame();
     }
 
     private void ShowLoadingControls()
@@ -246,7 +222,6 @@ public class UIController : MonoBehaviour
     
     private void ShowGame() 
     {
-        // TODO show game from current save
         ScenesController.Instance.ChangeScene("Level1");
         SetActivePanel(hudPanel);
         ResetMenuCameraIfAvailable();
@@ -260,13 +235,11 @@ public class UIController : MonoBehaviour
 
     private void ShowPause()
     {
-        // TODO stop in-game time
         SetActivePanel(pausePanel);
     }
 
     public void ShowHUD()
     {
-        // TODO start in-game time
         SetActivePanel(hudPanel);
         ResetMenuCameraIfAvailable();
     }
@@ -279,7 +252,6 @@ public class UIController : MonoBehaviour
 
     public void SaveAndShowMainMenu()
     {
-        // TODO save game
         ScenesController.Instance.ChangeScene("MenuBackgroundScene");
         SetActivePanel(mainMenuPanel);
         ResetMenuCameraIfAvailable();
@@ -296,12 +268,6 @@ public class UIController : MonoBehaviour
     public void AskExitGame()
     {
         _onConfirmAction = Application.Quit;
-        SetActivePanel(areYouSurePanel);
-    }
-
-    private void AskNewGame()
-    {
-        _onConfirmAction = CreateNewGame;
         SetActivePanel(areYouSurePanel);
     }
     
