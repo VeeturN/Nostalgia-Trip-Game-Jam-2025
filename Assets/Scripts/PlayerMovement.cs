@@ -13,8 +13,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private string _verticalAxis = "Vertical_P1"; 
     [SerializeField] private string _jumpButton = "Jump_P1";           
     [SerializeField] private string _grappleButton = "Fire1_P1";       
-    [SerializeField] private string _dashButton = "Fire2_P1"; 
-
+    [SerializeField] private string _dashButton = "Fire3_P1"; 
+    [SerializeField] private string _changeSize = "Fire2_P1";
+    
     [Header("Mario Mode (Ziemia)")]
     [SerializeField] private float _moveSpeed = 8f;
     [SerializeField] private float _jumpForce = 15f;
@@ -85,6 +86,19 @@ public class PlayerMovement : MonoBehaviour
 
     private float _playerHalfWidth;
     private float _playerHalfHeight;
+    
+    [SerializeField] private Sprite _defaultSprite;
+    [SerializeField] private Sprite _pressedSprite;
+    [SerializeField] private float _newColliderHeight = 0.5f;
+    [SerializeField] private float _newColliderWidth = 0.5f;
+
+    private float _originalColliderHeight;
+    private float _originalColliderWidth;
+    private bool _isSizeChanged = false;
+    
+    public static int typeplayer { get; set; }
+    private BoxCollider2D col;
+    
 
     void Awake()
     {
@@ -92,9 +106,12 @@ public class PlayerMovement : MonoBehaviour
         _ropeJoint = GetComponent<DistanceJoint2D>();
         _lineRenderer = GetComponent<LineRenderer>();
         
-        BoxCollider2D col = GetComponent<BoxCollider2D>();
+        col = GetComponent<BoxCollider2D>();
         _playerHalfWidth = col.bounds.extents.x;
         _playerHalfHeight = col.bounds.extents.y;
+
+        _originalColliderHeight = col.size.y;
+        _originalColliderWidth = col.size.x;
 
         _rb.freezeRotation = true; 
         _defaultGravity = _rb.gravityScale; 
@@ -113,10 +130,27 @@ public class PlayerMovement : MonoBehaviour
     {
         if (_isDashing) 
             return; 
-
+        if (Input.GetButtonDown(_changeSize))
+        {
+            _isSizeChanged = !_isSizeChanged;
+            SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+            if (_isSizeChanged)
+            {
+                col.size = new Vector2(_newColliderHeight, _newColliderWidth);
+                spriteRenderer.sprite = _pressedSprite;
+                typeplayer = 0;
+            }
+            else
+            {
+                col.size = new Vector2(_originalColliderWidth, _originalColliderHeight);
+                spriteRenderer.sprite = _defaultSprite;
+                typeplayer = 1;
+            }
+        }
         _horizontalInput = Input.GetAxisRaw(_horizontalAxis);
         _verticalInput = Input.GetAxisRaw(_verticalAxis);
 
+        
         if (_horizontalInput != 0) 
         {
             _facingDirection = Mathf.Sign(_horizontalInput);
@@ -172,6 +206,8 @@ public class PlayerMovement : MonoBehaviour
             _lineRenderer.SetPosition(0, transform.position);
             _lineRenderer.SetPosition(1, _ropeJoint.connectedAnchor);
         }
+        if(_rb.velocity.x!=0)
+            GetComponent<SpriteRenderer>().flipX=_rb.velocity.x<0;
     }
 
     void FixedUpdate()
@@ -367,9 +403,14 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void CheckGround() {
-        float rayLength = _playerHalfHeight + 0.1f; 
-        bool hitLeft = Physics2D.Raycast(transform.position + Vector3.left * (_playerHalfWidth * 0.9f), Vector2.down, rayLength, _groundLayer); 
-        bool hitRight = Physics2D.Raycast(transform.position + Vector3.right * (_playerHalfWidth * 0.9f), Vector2.down, rayLength, _groundLayer); 
+        float playerHalfHeight = col.bounds.extents.y;
+        float playerHalfWidth = col.bounds.extents.x;
+        float rayLength = playerHalfHeight + 0.1f;
+        Vector2 center = col.bounds.center;
+        
+        bool hitLeft = Physics2D.Raycast(center + Vector2.left * (playerHalfWidth * 0.8f), Vector2.down, rayLength, _groundLayer);
+        bool hitRight = Physics2D.Raycast(center + Vector2.right * (playerHalfWidth * 0.8f), Vector2.down, rayLength, _groundLayer);
+        
         _isGrounded = (hitLeft || hitRight) && _rb.velocity.y <= 0.1f;
     }
 

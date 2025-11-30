@@ -97,6 +97,8 @@ public class RetroMovement : MonoBehaviour
                 rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             }
         }
+        if(rb.velocity.x!=0)
+            GetComponent<SpriteRenderer>().flipX=rb.velocity.x<0;
     }
 
     void FixedUpdate()
