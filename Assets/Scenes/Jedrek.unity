@@ -1337,7 +1337,7 @@ Animator:
   m_GameObject: {fileID: 1128358484}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f38094623afc3449e8f2203feb6a4dfa, type: 2}
+  m_Controller: {fileID: 9100000, guid: e38c79cb1f49cdd498715adb43b3c2c1, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1358,7 +1358,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 849750061648100696, guid: c3338bcd72d5d5c4b8360a5b3e0e808f, type: 3}
       propertyPath: m_Distance
-      value: 3.1712215
+      value: 6.806247
       objectReference: {fileID: 0}
     - target: {fileID: 3032079711080035642, guid: c3338bcd72d5d5c4b8360a5b3e0e808f, type: 3}
       propertyPath: m_Size.x
@@ -1398,19 +1398,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5858309042967850144, guid: c3338bcd72d5d5c4b8360a5b3e0e808f, type: 3}
       propertyPath: _changeSize
-      value: Fire3_P2
+      value: Fire3
       objectReference: {fileID: 0}
     - target: {fileID: 5858309042967850144, guid: c3338bcd72d5d5c4b8360a5b3e0e808f, type: 3}
       propertyPath: _dashButton
-      value: Fire2_P2
+      value: Fire2
       objectReference: {fileID: 0}
     - target: {fileID: 5858309042967850144, guid: c3338bcd72d5d5c4b8360a5b3e0e808f, type: 3}
       propertyPath: _jumpButton
-      value: Jump_P2
+      value: Jump
       objectReference: {fileID: 0}
     - target: {fileID: 5858309042967850144, guid: c3338bcd72d5d5c4b8360a5b3e0e808f, type: 3}
       propertyPath: _verticalAxis
-      value: Vertical_P2
+      value: Vertical
       objectReference: {fileID: 0}
     - target: {fileID: 5858309042967850144, guid: c3338bcd72d5d5c4b8360a5b3e0e808f, type: 3}
       propertyPath: _defaultSprite
@@ -1418,7 +1418,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 3b08b063c0e924573a4d935e833e3fc6, type: 3}
     - target: {fileID: 5858309042967850144, guid: c3338bcd72d5d5c4b8360a5b3e0e808f, type: 3}
       propertyPath: _grappleButton
-      value: Fire1_P2
+      value: Fire1
       objectReference: {fileID: 0}
     - target: {fileID: 5858309042967850144, guid: c3338bcd72d5d5c4b8360a5b3e0e808f, type: 3}
       propertyPath: _pressedSprite
@@ -1426,7 +1426,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 7e8f52277f92f47d0af237d8c12523f5, type: 3}
     - target: {fileID: 5858309042967850144, guid: c3338bcd72d5d5c4b8360a5b3e0e808f, type: 3}
       propertyPath: _horizontalAxis
-      value: Horizontal_P2
+      value: Horizontal
       objectReference: {fileID: 0}
     - target: {fileID: 5858309042967850144, guid: c3338bcd72d5d5c4b8360a5b3e0e808f, type: 3}
       propertyPath: _newColliderWidth
@@ -1438,11 +1438,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6446140825143934849, guid: c3338bcd72d5d5c4b8360a5b3e0e808f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.7511399
+      value: 6.19
       objectReference: {fileID: 0}
     - target: {fileID: 6446140825143934849, guid: c3338bcd72d5d5c4b8360a5b3e0e808f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.0809796
+      value: -2.83
       objectReference: {fileID: 0}
     - target: {fileID: 6446140825143934849, guid: c3338bcd72d5d5c4b8360a5b3e0e808f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1849,7 +1849,7 @@ PrefabInstance:
     - target: {fileID: 3195703024218639788, guid: c3338bcd72d5d5c4b8360a5b3e0e808f, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: b298b032a9c09406a8e3c1b3da861541, type: 2}
+      objectReference: {fileID: 9100000, guid: 78106219e35c89b448e80ada228463e8, type: 2}
     - target: {fileID: 4793707385068909154, guid: c3338bcd72d5d5c4b8360a5b3e0e808f, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -1880,11 +1880,11 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: cac6ad9ed48574df684f37a910f14027, type: 3}
     - target: {fileID: 6446140825143934849, guid: c3338bcd72d5d5c4b8360a5b3e0e808f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.0126513
+      value: 4.01
       objectReference: {fileID: 0}
     - target: {fileID: 6446140825143934849, guid: c3338bcd72d5d5c4b8360a5b3e0e808f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.1085386
+      value: -2.87
       objectReference: {fileID: 0}
     - target: {fileID: 6446140825143934849, guid: c3338bcd72d5d5c4b8360a5b3e0e808f, type: 3}
       propertyPath: m_LocalPosition.z
