@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIController : MonoBehaviour
 {
-    private const float LoadingDuration = 5f;
+    private const float LoadingDuration = 3f;
     public static UIController UIControllerInstance { get; private set; }
 
     [Header("Panels")]
@@ -22,6 +23,12 @@ public class UIController : MonoBehaviour
     [Header("Loading Controls References")]
     public Slider loadingSlider;
     public TMPro.TextMeshProUGUI pressAnyButtonText;
+
+    [Header("Camera Zoom")]
+    [Tooltip("Reference to the MenuBackgroundScene camera zoom controller. Leave empty to auto-locate.")]
+    public MenuCameraZoom menuCameraZoom;
+    [Tooltip("Focus point for the camera while the loading controls are visible.")]
+    public Transform loadingCameraFocus;
     
     private GameObject[] _allPanels;
     private GameObject _lastPanel;
@@ -30,7 +37,6 @@ public class UIController : MonoBehaviour
     private bool _waitingForAnyButton;
     private System.Action _onAnyButtonPressed;
     
-    // TODO temp variable
     private bool _hasSave;
 
     private void Awake()
@@ -60,6 +66,38 @@ public class UIController : MonoBehaviour
             panel.SetActive(panel == activePanel);
         }
     }
+
+    private void EnsureMenuCameraReference()
+    {
+        if (menuCameraZoom != null)
+        {
+            return;
+        }
+
+        var menuScene = SceneManager.GetSceneByName("MenuBackgroundScene");
+        if (menuScene.IsValid() && menuScene.isLoaded)
+        {
+            foreach (var root in menuScene.GetRootGameObjects())
+            {
+                menuCameraZoom = root.GetComponentInChildren<MenuCameraZoom>(true);
+                if (menuCameraZoom != null)
+                {
+                    return;
+                }
+            }
+        }
+
+        menuCameraZoom = FindObjectOfType<MenuCameraZoom>();
+    }
+
+    private void ResetMenuCameraIfAvailable()
+    {
+        EnsureMenuCameraReference();
+        if (menuCameraZoom != null)
+        {
+            menuCameraZoom.ResetZoom();
+        }
+    }
     
     private GameObject GetCurrentActivePanel()
     {
@@ -86,7 +124,7 @@ public class UIController : MonoBehaviour
             
             if (GetCurrentActivePanel() == titlePanel)
             {
-                SetActivePanel(mainMenuPanel);
+                ShowMainMenu();
             }
             else
             {
@@ -110,6 +148,7 @@ public class UIController : MonoBehaviour
     public void ShowMainMenu()
     {
         SetActivePanel(mainMenuPanel);
+        ResetMenuCameraIfAvailable();
     }
     
     public void ShowNewGame()
@@ -141,28 +180,27 @@ public class UIController : MonoBehaviour
 
     private void ShowLoadingControls()
     {
-        var mainMenuAnimator = mainMenuPanel.GetComponent<PanelAnimator>();
-        if (mainMenuAnimator)
-        {
-            mainMenuAnimator.HideToLeft();
-        }
-        else
-        {
-            mainMenuPanel.SetActive(false);
-        }
-        
+        mainMenuPanel.SetActive(false);
         loadingControlsPanel.SetActive(true);
-        var loadingAnimator = loadingControlsPanel.GetComponent<PanelAnimator>();
-        if (loadingAnimator)
-        {
-            loadingAnimator.ShowFromRight();
-        }
-        
+
         foreach (var panel in _allPanels)
         {
             if (panel != loadingControlsPanel && panel != mainMenuPanel)
             {
                 panel.SetActive(false);
+            }
+        }
+
+        EnsureMenuCameraReference();
+        if (menuCameraZoom != null)
+        {
+            if (loadingCameraFocus != null)
+            {
+                menuCameraZoom.ZoomToTarget(loadingCameraFocus);
+            }
+            else
+            {
+                menuCameraZoom.ResetZoom();
             }
         }
         
@@ -209,13 +247,15 @@ public class UIController : MonoBehaviour
     private void ShowGame() 
     {
         // TODO show game from current save
-        ScenesController.Instance.ChangeScene("GameScene");
+        ScenesController.Instance.ChangeScene("Level1");
         SetActivePanel(hudPanel);
+        ResetMenuCameraIfAvailable();
     }
     
     public void ShowCredits()
     {
         SetActivePanel(creditsPanel);
+        ResetMenuCameraIfAvailable();
     }
 
     private void ShowPause()
@@ -228,11 +268,13 @@ public class UIController : MonoBehaviour
     {
         // TODO start in-game time
         SetActivePanel(hudPanel);
+        ResetMenuCameraIfAvailable();
     }
     
     public void ShowControls()
     {
         SetActivePanel(controlsPanel);
+        ResetMenuCameraIfAvailable();
     }
 
     public void SaveAndShowMainMenu()
@@ -240,6 +282,7 @@ public class UIController : MonoBehaviour
         // TODO save game
         ScenesController.Instance.ChangeScene("MenuBackgroundScene");
         SetActivePanel(mainMenuPanel);
+        ResetMenuCameraIfAvailable();
     }
     
     public void ShowLastPanel()
