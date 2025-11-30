@@ -19,6 +19,7 @@ public class UIController : MonoBehaviour
     public GameObject pausePanel;
     public GameObject controlsPanel;
     public GameObject areYouSurePanel;
+    public GameObject endPanel;
     
     [Header("Loading Controls References")]
     public Slider loadingSlider;
@@ -51,7 +52,7 @@ public class UIController : MonoBehaviour
         _allPanels = new[] 
         { 
             titlePanel, mainMenuPanel, creditsPanel, loadingControlsPanel, 
-            hudPanel, pausePanel, controlsPanel, areYouSurePanel 
+            hudPanel, pausePanel, controlsPanel, areYouSurePanel, endPanel
         };
     }
 
@@ -233,6 +234,18 @@ public class UIController : MonoBehaviour
     public void ShowCredits()
     {
         SetActivePanel(creditsPanel);
+        ResetMenuCameraIfAvailable();
+    }
+
+    public void ShowControls()
+    {
+        SetActivePanel(controlsPanel);
+        ResetMenuCameraIfAvailable();
+    }
+
+    public void ShowEndPanel()
+    {
+        SetActivePanel(endPanel);
         ResetMenuCameraIfAvailable();
     }
 
