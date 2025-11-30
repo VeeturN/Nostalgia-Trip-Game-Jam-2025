@@ -176,7 +176,8 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (_isDashing) return; 
+        if (_isDashing) 
+            return; 
 
         CheckGround();
         CheckWall();
@@ -242,7 +243,8 @@ public class PlayerMovement : MonoBehaviour
         bool pushingWall = (_wallDirection == 1 && _horizontalInput > 0) || (_wallDirection == -1 && _horizontalInput < 0);
         if (_isTouchingWall && !_isGrounded && _rb.velocity.y < 0 && pushingWall) 
         {
-            _isWallSliding = true; _momentumMode = false;
+            _isWallSliding = true;
+            _momentumMode = false;
                 if (_rb.velocity.y < -_wallSlideSpeed) 
                     _rb.velocity = new Vector2(_rb.velocity.x, -_wallSlideSpeed);
         }
@@ -324,7 +326,8 @@ public class PlayerMovement : MonoBehaviour
         float totalDistance = Vector2.Distance(_ropeStartPosition, _grapplePoint); 
         float t = _ropeFlightTimeElapsed / (totalDistance / _grappleShootSpeed); 
         Vector2 currentPos = Vector2.Lerp(_ropeStartPosition, _grapplePoint, t); 
-        _lineRenderer.SetPosition(0, transform.position); _lineRenderer.SetPosition(1, currentPos);
+        _lineRenderer.SetPosition(0, transform.position); 
+        _lineRenderer.SetPosition(1, currentPos);
         if (t >= 1f)
         {
             _isGrapplingRope = false; 
