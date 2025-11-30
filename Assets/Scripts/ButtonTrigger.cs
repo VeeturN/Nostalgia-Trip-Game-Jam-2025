@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ButtonTrigger : MonoBehaviour
 {
-    [Header("Co ma otwierać?")]
+    [Header("Co ma otwierać")]
     [SerializeField] private bool _OneTime; 
     [SerializeField] private GameObject doorObject; 
     [SerializeField] private bool Reverse;

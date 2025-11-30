@@ -460,19 +460,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4999235641102228684, guid: e77038ca66a40074a91c39a71b0ed840, type: 3}
       propertyPath: jumpButton
-      value: Jump_P2
+      value: Jump
       objectReference: {fileID: 0}
     - target: {fileID: 4999235641102228684, guid: e77038ca66a40074a91c39a71b0ed840, type: 3}
       propertyPath: _changeSize
-      value: Fire2_P2
+      value: Fire2
       objectReference: {fileID: 0}
     - target: {fileID: 4999235641102228684, guid: e77038ca66a40074a91c39a71b0ed840, type: 3}
       propertyPath: verticalAxis
-      value: Vertical_P2
+      value: Vertical
       objectReference: {fileID: 0}
     - target: {fileID: 4999235641102228684, guid: e77038ca66a40074a91c39a71b0ed840, type: 3}
       propertyPath: horizontalAxis
-      value: Horizontal_P2
+      value: Horizontal
       objectReference: {fileID: 0}
     - target: {fileID: 4999235641102228684, guid: e77038ca66a40074a91c39a71b0ed840, type: 3}
       propertyPath: groundLayer.m_Bits
