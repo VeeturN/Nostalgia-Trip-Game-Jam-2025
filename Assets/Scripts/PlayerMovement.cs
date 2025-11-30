@@ -16,36 +16,36 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private string _dashButton = "Fire3_P1"; 
     [SerializeField] private string _changeSize = "Fire2_P1";
     
-    [Header("Mario Mode (Ziemia)")]
+    [Header("Mario")]
     [SerializeField] private float _moveSpeed = 8f;
     [SerializeField] private float _jumpForce = 15f;
 
-    [Header("Dash (Zryw)")]
+    [Header("Dash")]
     [SerializeField] private float _dashSpeed = 25f;     
     [SerializeField] private float _dashDuration = 0.2f; 
     
-    [Header("Wall Mechanics (Ściany)")]
+    [Header("Wall Mec ")]
     [SerializeField] private float _wallSlideSpeed = 2f;      
     [SerializeField] private Vector2 _wallJumpForce = new Vector2(10f, 15f); 
     [SerializeField] private float _wallJumpStopInputTime = 0.2f; 
     [SerializeField] private LayerMask _wallLayer; 
     
-    [Header("Spider-Man Mode (Lina)")]
+    [Header("SpiderMan Lines")]
     [SerializeField] private float _swingForce = 50f;          
     [SerializeField] private float _grappleShootSpeed = 60f; 
     
-    [Header("Spider-Man Mode (Lot swobodny)")]
+    [Header("Spider-Man")]
     [SerializeField] private float _momentumAirControl = 10f;  
     [SerializeField] private float _momentumBrakeForce = 35f;  
     [SerializeField] private float _momentumDrag = 0.5f; 
 
-    [Header("Auto-Aim (Haki)")]
+    [Header("Auto-Aim")]
     [SerializeField] private float _scanRadius = 15f; 
     [SerializeField] private LayerMask _hookLayer;   
     [SerializeField] private LayerMask _obstacleLayer; 
     [SerializeField] private GameObject _aimReticle;   
 
-    [Header("Wykrywanie Ziemi")]
+    [Header("Ground Detec")]
     [SerializeField] private LayerMask _groundLayer; 
 
     // Komponenty
