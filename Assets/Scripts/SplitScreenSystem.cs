@@ -10,23 +10,29 @@ public class FinalSplitScreenController : MonoBehaviour
     public Camera cam2;
 
     [Header("--- ZOOM (ZBLIŻENIE) ---")]
-    [Tooltip("Zoom, gdy gracze są RAZEM. Kamera patrzy na środek między nimi.")]
-    [Range(2f, 40f)] public float mergedZoom = 15.0f; // Większa wartość, żeby widzieć obu
+    [Tooltip("Zoom, gdy gracze są RAZEM.")]
+    [Range(2f, 40f)] public float mergedZoom = 15.0f;
 
-    [Tooltip("Zoom, gdy gracze są OSOBNO. Kamera skupia się na jednym graczu.")]
+    [Tooltip("Zoom, gdy gracze są OSOBNO.")]
     [Range(2f, 40f)] public float splitZoom = 8.0f;
 
-    [Header("--- KONFIGURACJA PRZEJŚĆ ---")]
-    [Tooltip("Szybkość przejścia między trybami (Zoom, Pozycja, Alpha).")]
+    [Header("--- KONFIGURACJA HISTEREZY (To naprawia miganie) ---")]
+    [Tooltip("Dystans, przy którym ekran SIĘ ROZDZIELA. (Musi być większy niż Merge)")]
+    public float splitDistance = 10.0f; 
+
+    [Tooltip("Dystans, przy którym ekran SIĘ ŁĄCZY z powrotem. (Musi być mniejszy niż Split)")]
+    public float mergeDistance = 8.0f;
+
+    [Header("--- POZOSTAŁE ---")]
+    [Tooltip("Szybkość przejścia między trybami.")]
     public float transitionSpeed = 2.0f;
 
-    [Tooltip("Dystans, przy którym ekran pęka na pół.")]
-    public float splitDistance = 10.0f; // Zwiększ to, jeśli chcesz dłużej widzieć wspólny ekran
-
-    [Tooltip("Rozsuwanie kamer przy podziale (żeby nie wchodzić w linię).")]
+    [Tooltip("Rozsuwanie kamer przy podziale.")]
     public float splitSeparation = 3.0f;
 
-    [Header("--- WYGLĄD ---")]
+    [Header("--- TŁO I WYGLĄD ---")]
+    [Tooltip("Zaznacz, jeśli masz 'Tryb Schiza' (rozmazany ekran). Odznacz, jeśli masz inną kamerę tła.")]
+    public bool forceBlackBackground = true;
     public float lineWidth = 15.0f;
     public bool invertRotation = false;
 
@@ -46,6 +52,11 @@ public class FinalSplitScreenController : MonoBehaviour
     private float currentZoom;
     private float zoomVel;
 
+    private Camera outputCameraRef;
+    
+    // Zmienna stanu dla Histerezy
+    private bool isCurrentlySplit = false;
+
     void Start()
     {
         // 1. SETUP KAMER
@@ -54,25 +65,31 @@ public class FinalSplitScreenController : MonoBehaviour
         
         cam1.transform.localScale = Vector3.one;
         cam2.transform.localScale = Vector3.one;
+        
+        cam1.transform.position = new Vector3(cam1.transform.position.x, cam1.transform.position.y, -10);
+        cam2.transform.position = new Vector3(cam2.transform.position.x, cam2.transform.position.y, -10);
+        
         cam1.orthographic = true;
         cam2.orthographic = true;
         
-        currentZoom = mergedZoom;
+        cam1.clearFlags = CameraClearFlags.SolidColor;
+        cam1.backgroundColor = new Color(0.2f, 0.2f, 0.2f);
+        cam2.clearFlags = CameraClearFlags.SolidColor;
+        cam2.backgroundColor = new Color(0.2f, 0.2f, 0.2f);
 
-        // Wyłącz inne kamery
-        foreach (Camera c in FindObjectsOfType<Camera>())
-        {
-            if (c != cam1 && c != cam2 && c.GetComponent<FinalSplitScreenController>() == null)
-                c.enabled = false;
-        }
+        currentZoom = mergedZoom;
 
         SetupRenderTextures();
         CreateOutputCamera();
         BuildNewUI();
+        
+        UpdateBackgroundMode();
     }
 
     void LateUpdate()
     {
+        UpdateBackgroundMode();
+
         if (!player1 || !player2) return;
 
         Vector3 p1 = player1.position;
@@ -80,59 +97,70 @@ public class FinalSplitScreenController : MonoBehaviour
         Vector3 delta = p2 - p1;
         float dist = delta.magnitude;
         Vector3 dir = delta.normalized;
-        Vector3 midpoint = (p1 + p2) / 2.0f; // Punkt środkowy
+        Vector3 midpoint = (p1 + p2) / 2.0f;
 
-        // Decyzja: Split czy Merge?
-        bool isSplit = dist > splitDistance;
+        // --- HISTEREZA (LOGIKA PRZEŁĄCZANIA) ---
+        // To jest serce poprawki na miganie
+        if (isCurrentlySplit)
+        {
+            // Jesteśmy podzieleni. Czy zbliżyliśmy się wystarczająco, żeby złączyć?
+            // Używamy mniejszej wartości (mergeDistance)
+            if (dist < mergeDistance)
+            {
+                isCurrentlySplit = false;
+            }
+        }
+        else
+        {
+            // Jesteśmy złączeni. Czy oddaliliśmy się wystarczająco, żeby podzielić?
+            // Używamy większej wartości (splitDistance)
+            if (dist > splitDistance)
+            {
+                isCurrentlySplit = true;
+            }
+        }
 
-        // --- A. OBSŁUGA ZOOMU ---
-        float targetZoom = isSplit ? splitZoom : mergedZoom;
+        // --- A. ZOOM ---
+        float targetZoom = isCurrentlySplit ? splitZoom : mergedZoom;
         currentZoom = Mathf.SmoothDamp(currentZoom, targetZoom, ref zoomVel, 0.5f / transitionSpeed);
 
         cam1.orthographicSize = currentZoom;
         cam2.orthographicSize = currentZoom;
 
 
-        // --- B. POZYCJONOWANIE KAMER (TU JEST ZMIANA) ---
-        
-        // Oblicz separację tylko dla trybu SPLIT
-        float targetSep = isSplit ? splitSeparation : 0f;
+        // --- B. POZYCJE ---
+        float targetSep = isCurrentlySplit ? splitSeparation : 0f;
         currentSep = Mathf.SmoothDamp(currentSep, targetSep, ref sepVel, 0.5f / transitionSpeed);
 
         Vector3 targetPos1, targetPos2;
 
-        if (isSplit)
+        if (isCurrentlySplit)
         {
-            // TRYB SPLIT: Każda kamera śledzi swojego gracza + separacja
             targetPos1 = p1 + (dir * currentSep);
             targetPos2 = p2 - (dir * currentSep);
         }
         else
         {
-            // TRYB MERGED: Obie kamery patrzą na WSPÓLNY ŚRODEK
             targetPos1 = midpoint;
             targetPos2 = midpoint;
         }
 
-        // Dodajemy Z=-10
         targetPos1.z = -10;
         targetPos2.z = -10;
 
-        // Aplikujemy ruch (SmoothDamp zapewnia płynne przejście między trybami)
         cam1.transform.position = Vector3.SmoothDamp(cam1.transform.position, targetPos1, ref velCam1, 0.2f);
         cam2.transform.position = Vector3.SmoothDamp(cam2.transform.position, targetPos2, ref velCam2, 0.2f);
 
 
-        // --- C. UI I PRZEZROCZYSTOŚĆ ---
+        // --- C. UI ---
         float angleRad = Mathf.Atan2(delta.y, delta.x);
         float angleDeg = angleRad * Mathf.Rad2Deg;
         if (invertRotation) angleDeg *= -1;
 
         float lerpSpeed = Time.deltaTime * transitionSpeed * 2f;
 
-        if (isSplit)
+        if (isCurrentlySplit)
         {
-            // Wchodzimy w Split
             splitCanvasGroup.alpha = Mathf.Lerp(splitCanvasGroup.alpha, 1, lerpSpeed);
             backgroundCanvasGroup.alpha = Mathf.Lerp(backgroundCanvasGroup.alpha, 0, lerpSpeed);
             
@@ -142,13 +170,28 @@ public class FinalSplitScreenController : MonoBehaviour
         }
         else
         {
-            // Wchodzimy w Merge
             splitCanvasGroup.alpha = Mathf.Lerp(splitCanvasGroup.alpha, 0, lerpSpeed);
             backgroundCanvasGroup.alpha = Mathf.Lerp(backgroundCanvasGroup.alpha, 1, lerpSpeed);
             
             rotatorPivot.localRotation = Quaternion.Lerp(rotatorPivot.localRotation, Quaternion.identity, lerpSpeed);
             content1.localRotation = Quaternion.Lerp(content1.localRotation, Quaternion.identity, lerpSpeed);
             content2.localRotation = Quaternion.Lerp(content2.localRotation, Quaternion.identity, lerpSpeed);
+        }
+    }
+
+    void UpdateBackgroundMode()
+    {
+        if (outputCameraRef != null)
+        {
+            if (forceBlackBackground)
+            {
+                outputCameraRef.clearFlags = CameraClearFlags.SolidColor;
+                outputCameraRef.backgroundColor = Color.black;
+            }
+            else
+            {
+                outputCameraRef.clearFlags = CameraClearFlags.Depth;
+            }
         }
     }
 
@@ -252,12 +295,14 @@ public class FinalSplitScreenController : MonoBehaviour
     void CreateOutputCamera()
     {
         GameObject outCam = new GameObject("Output_Cam_Final");
-        Camera c = outCam.AddComponent<Camera>();
-        c.cullingMask = 0;
-        c.clearFlags = CameraClearFlags.SolidColor;
-        c.backgroundColor = Color.black;
-        c.orthographic = true;
-        c.depth = 100;
+        outputCameraRef = outCam.AddComponent<Camera>();
+        
+        outputCameraRef.cullingMask = 0; 
+        outputCameraRef.orthographic = true;
+        outputCameraRef.depth = 100;
+        outputCameraRef.clearFlags = CameraClearFlags.SolidColor;
+        outputCameraRef.backgroundColor = Color.black;
+        
         if(outCam.GetComponent<AudioListener>()) Destroy(outCam.GetComponent<AudioListener>());
     }
 
