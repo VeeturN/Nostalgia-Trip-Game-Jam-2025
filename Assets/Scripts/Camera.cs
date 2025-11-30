@@ -15,11 +15,9 @@ public class CameraFollow : MonoBehaviour
     [Tooltip("Approximate time (in seconds) the camera takes to reach the target position. Lower = snappier, higher = smoother/slower.")]
     [Min(0f)]
     public float smoothTime = 0.15f;
-
-    // Velocity used by SmoothDamp (do not modify from inspector)
+    
     private Vector3 currentVelocity = Vector3.zero;
 
-    // Try to find the player if no target assigned in the inspector
     void Start()
     {
         if (target == null)
@@ -29,15 +27,13 @@ public class CameraFollow : MonoBehaviour
                 target = player.transform;
         }
     }
-
-    // Use LateUpdate so camera follows after all character movement is applied
+    
     void LateUpdate()
     {
         if (target == null)
             return;
 
         Vector3 desiredPosition = target.position + offset;
-        // Smoothly move the camera using SmoothDamp (framerate-independent)
         transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref currentVelocity, smoothTime);
     }
 }

@@ -35,8 +35,7 @@ public class FinalSplitScreenController : MonoBehaviour
     public bool forceBlackBackground = true;
     public float lineWidth = 15.0f;
     public bool invertRotation = false;
-
-    // --- ZMIENNE WEWNĘTRZNE ---
+    
     private RenderTexture rt1, rt2;
     private CanvasGroup splitCanvasGroup;      
     private CanvasGroup backgroundCanvasGroup; 
@@ -54,12 +53,10 @@ public class FinalSplitScreenController : MonoBehaviour
 
     private Camera outputCameraRef;
     
-    // Zmienna stanu dla Histerezy
     private bool isCurrentlySplit = false;
 
     void Start()
     {
-        // 1. SETUP KAMER
         if (cam1.transform.parent != null) cam1.transform.parent = null;
         if (cam2.transform.parent != null) cam2.transform.parent = null;
         
@@ -98,13 +95,9 @@ public class FinalSplitScreenController : MonoBehaviour
         float dist = delta.magnitude;
         Vector3 dir = delta.normalized;
         Vector3 midpoint = (p1 + p2) / 2.0f;
-
-        // --- HISTEREZA (LOGIKA PRZEŁĄCZANIA) ---
-        // To jest serce poprawki na miganie
+        
         if (isCurrentlySplit)
         {
-            // Jesteśmy podzieleni. Czy zbliżyliśmy się wystarczająco, żeby złączyć?
-            // Używamy mniejszej wartości (mergeDistance)
             if (dist < mergeDistance)
             {
                 isCurrentlySplit = false;
@@ -112,23 +105,18 @@ public class FinalSplitScreenController : MonoBehaviour
         }
         else
         {
-            // Jesteśmy złączeni. Czy oddaliliśmy się wystarczająco, żeby podzielić?
-            // Używamy większej wartości (splitDistance)
             if (dist > splitDistance)
             {
                 isCurrentlySplit = true;
             }
         }
-
-        // --- A. ZOOM ---
+        
         float targetZoom = isCurrentlySplit ? splitZoom : mergedZoom;
         currentZoom = Mathf.SmoothDamp(currentZoom, targetZoom, ref zoomVel, 0.5f / transitionSpeed);
 
         cam1.orthographicSize = currentZoom;
         cam2.orthographicSize = currentZoom;
-
-
-        // --- B. POZYCJE ---
+        
         float targetSep = isCurrentlySplit ? splitSeparation : 0f;
         currentSep = Mathf.SmoothDamp(currentSep, targetSep, ref sepVel, 0.5f / transitionSpeed);
 
@@ -150,9 +138,7 @@ public class FinalSplitScreenController : MonoBehaviour
 
         cam1.transform.position = Vector3.SmoothDamp(cam1.transform.position, targetPos1, ref velCam1, 0.2f);
         cam2.transform.position = Vector3.SmoothDamp(cam2.transform.position, targetPos2, ref velCam2, 0.2f);
-
-
-        // --- C. UI ---
+        
         float angleRad = Mathf.Atan2(delta.y, delta.x);
         float angleDeg = angleRad * Mathf.Rad2Deg;
         if (invertRotation) angleDeg *= -1;
@@ -194,51 +180,42 @@ public class FinalSplitScreenController : MonoBehaviour
             }
         }
     }
-
-    // ========================================================================
-    // BUDOWA UI
-    // ========================================================================
+    
     void BuildNewUI()
     {
         GameObject goCanvas = new GameObject("Split_UI_Canvas");
         Canvas cv = goCanvas.AddComponent<Canvas>();
         cv.renderMode = RenderMode.ScreenSpaceOverlay;
         goCanvas.AddComponent<CanvasScaler>();
-
-        // TŁO
+        
         GameObject bgObj = CreateRawImage("Background_Merged", rt1, goCanvas.transform);
         Stretch(bgObj.GetComponent<RectTransform>());
         backgroundCanvasGroup = bgObj.AddComponent<CanvasGroup>(); 
         backgroundCanvasGroup.alpha = 1;
-
-        // SPLIT
+        
         GameObject splitRoot = new GameObject("Split_Container");
         splitRoot.transform.SetParent(goCanvas.transform, false);
         Stretch(splitRoot.AddComponent<RectTransform>());
         splitCanvasGroup = splitRoot.AddComponent<CanvasGroup>();
         splitCanvasGroup.alpha = 0;
-
-        // ROTATOR
+        
         GameObject rotator = new GameObject("Rotator_Pivot");
         rotator.transform.SetParent(splitRoot.transform, false);
         rotatorPivot = rotator.AddComponent<RectTransform>();
         rotatorPivot.anchorMin = new Vector2(0.5f, 0.5f);
         rotatorPivot.anchorMax = new Vector2(0.5f, 0.5f);
         rotatorPivot.sizeDelta = new Vector2(Screen.width * 3, Screen.height * 3);
-
-        // LEWA
+        
         mask1 = CreateMask("Mask_Left", rotator.transform, true);
         GameObject c1 = CreateRawImage("Content_P1", rt1, mask1.transform);
         content1 = c1.GetComponent<RectTransform>();
         SetupContentRect(content1, true);
-
-        // PRAWA
+        
         mask2 = CreateMask("Mask_Right", rotator.transform, false);
         GameObject c2 = CreateRawImage("Content_P2", rt2, mask2.transform);
         content2 = c2.GetComponent<RectTransform>();
         SetupContentRect(content2, false);
-
-        // LINIA
+        
         GameObject line = new GameObject("Separator_Line");
         line.transform.SetParent(rotator.transform, false);
         Image li = line.AddComponent<Image>();

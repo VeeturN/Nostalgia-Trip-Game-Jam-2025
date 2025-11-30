@@ -8,6 +8,7 @@ TagManager:
   - TOP
   - Wall
   - Player2
+  - Barrel
   layers:
   - Default
   - TransparentFX
