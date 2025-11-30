@@ -151,11 +151,14 @@ public class UIController : MonoBehaviour
     
     public void ShowNewGame()
     {
-        ShowGame();
+        StopAllCoroutines();
+        ShowLoadingControls();
     }
 
     private void ShowLoadingControls()
     {
+        _waitingForAnyButton = false;
+
         mainMenuPanel.SetActive(false);
         loadingControlsPanel.SetActive(true);
 
