@@ -99,6 +99,7 @@ GameObject:
   - component: {fileID: 3032079711080035642}
   - component: {fileID: 849750061648100696}
   - component: {fileID: 5087730395535307738}
+  - component: {fileID: 3195703024218639788}
   m_Layer: 0
   m_Name: Player2
   m_TagString: Untagged
@@ -219,6 +220,7 @@ MonoBehaviour:
   _jumpButton: Jump_P1
   _grappleButton: Fire1_P1
   _dashButton: Fire2_P1
+  _changeSize: Fire2_P1
   _moveSpeed: 8
   _jumpForce: 15
   _dashSpeed: 25
@@ -245,6 +247,10 @@ MonoBehaviour:
   _groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  _defaultSprite: {fileID: 0}
+  _pressedSprite: {fileID: 0}
+  _newColliderHeight: 0.5
+  _newColliderWidth: 0.5
 --- !u!61 &3032079711080035642
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -414,3 +420,24 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!95 &3195703024218639788
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8550745864616469270}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

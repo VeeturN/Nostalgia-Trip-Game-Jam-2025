@@ -98,6 +98,8 @@ public class PlayerMovement : MonoBehaviour
     
     public static int typeplayer { get; set; }
     private BoxCollider2D col;
+
+    private Animator anim;
     
 
     void Awake()
@@ -114,7 +116,8 @@ public class PlayerMovement : MonoBehaviour
         _originalColliderWidth = col.size.x;
 
         _rb.freezeRotation = true; 
-        _defaultGravity = _rb.gravityScale; 
+        _defaultGravity = _rb.gravityScale;
+        anim = GetComponent<Animator>();
     }
 
     void Start()
@@ -132,20 +135,7 @@ public class PlayerMovement : MonoBehaviour
             return; 
         if (Input.GetButtonDown(_changeSize))
         {
-            _isSizeChanged = !_isSizeChanged;
-            SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-            if (_isSizeChanged)
-            {
-                col.size = new Vector2(_newColliderHeight, _newColliderWidth);
-                spriteRenderer.sprite = _pressedSprite;
-                typeplayer = 0;
-            }
-            else
-            {
-                col.size = new Vector2(_originalColliderWidth, _originalColliderHeight);
-                spriteRenderer.sprite = _defaultSprite;
-                typeplayer = 1;
-            }
+            anim.SetBool("isShaping", true);
         }
         _horizontalInput = Input.GetAxisRaw(_horizontalAxis);
         _verticalInput = Input.GetAxisRaw(_verticalAxis);
@@ -206,8 +196,21 @@ public class PlayerMovement : MonoBehaviour
             _lineRenderer.SetPosition(0, transform.position);
             _lineRenderer.SetPosition(1, _ropeJoint.connectedAnchor);
         }
-        if(_rb.velocity.x!=0)
-            GetComponent<SpriteRenderer>().flipX=_rb.velocity.x<0;
+
+        if (_rb.velocity.x != 0)
+        {
+            GetComponent<SpriteRenderer>().flipX = _rb.velocity.x < 0;
+            anim.SetBool("isWalking",true);
+        }
+        else
+        {
+            anim.SetBool("isWalking", false);
+        }
+
+        if (_rb.velocity.y > 0)
+            anim.SetBool("isJumping", true);
+        else
+            anim.SetBool("isJumping", false);
     }
 
     void FixedUpdate()
@@ -438,5 +441,25 @@ public class PlayerMovement : MonoBehaviour
     void OnDrawGizmosSelected() {
         Gizmos.color = Color.yellow; 
         Gizmos.DrawWireSphere(transform.position, _scanRadius);
+    }
+
+    public void Shape()
+    {
+        _isSizeChanged = !_isSizeChanged;
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        if (_isSizeChanged)
+        {
+            col.size = new Vector2(_newColliderHeight, _newColliderWidth);
+            spriteRenderer.sprite = _pressedSprite;
+            typeplayer = 0;
+        }
+        else
+        {
+            col.size = new Vector2(_originalColliderWidth, _originalColliderHeight);
+            spriteRenderer.sprite = _defaultSprite;
+            typeplayer = 1;
+        }
+        anim.SetBool("isShaping",false);
+        anim.SetBool("isShaped",_isSizeChanged);
     }
 }
