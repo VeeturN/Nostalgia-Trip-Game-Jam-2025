@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b75c95f34a00d4e8c04f76b73312e6, type: 3}
+  m_Name: grass
+  m_EditorClassIdentifier: 
+  m_AnimatedSprites:
+  - {fileID: 21300000, guid: 185c912c4b5e841418f2150e2b42e9aa, type: 3}
+  - {fileID: 21300000, guid: 1a64ea07e8e22453a8f3d5322e4a8062, type: 3}
+  - {fileID: 21300000, guid: ba1715865c44d416ea7f07baa117ee15, type: 3}
+  - {fileID: 21300000, guid: 28fa008824bfa45b9a12ab54d4a74b5a, type: 3}
+  m_MinSpeed: 4
+  m_MaxSpeed: 5
+  m_AnimationStartTime: 0
+  m_AnimationStartFrame: 0
+  m_TileColliderType: 0
+  m_TileAnimationFlags: 0
