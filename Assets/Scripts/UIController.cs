@@ -244,11 +244,6 @@ public class UIController : MonoBehaviour
         ResetMenuCameraIfAvailable();
     }
     
-    public void ShowControls()
-    {
-        SetActivePanel(controlsPanel);
-        ResetMenuCameraIfAvailable();
-    }
 
     public void SaveAndShowMainMenu()
     {
