@@ -1,4 +1,4 @@
-# 🕹️ Nostalgia Trip
+# 🕹️ Nostalgia Trip | Banana’s Era Shift
 
 ![2nd Place](https://img.shields.io/badge/Game_Jam_2025-2nd_Place-gold.svg)
 ![Unity](https://img.shields.io/badge/Made_with-Unity-black?logo=unity)
