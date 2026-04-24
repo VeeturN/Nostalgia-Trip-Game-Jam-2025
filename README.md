@@ -9,7 +9,7 @@
 
 ## 🎥 Gameplay Showcase
 
-[![Nostalgia Trip Gameplay](https://img.youtube.com/vi/2ID7UplhUp0/hqdefault.jpg)](https://www.youtube.com/watch?v=2ID7UplhUp0)
+[![Nostalgia Trip Gameplay](https://img.youtube.com/vi/2ID7UplhUp0/hqdefault.jpg)](https://www.youtube.com/watch?v=2ID7UplhUp0)<br>
 *(Click the image above to watch the gameplay video on YouTube)*
 
 ## 💡 About the Project
