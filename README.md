@@ -1,4 +1,4 @@
-# 🕹️ Nostalgia Trip | Banana’s Era Shift
+# 🕹️ Nostalgia Trip
 
 ![2nd Place](https://img.shields.io/badge/Game_Jam_2025-2nd_Place-gold.svg)
 ![Unity](https://img.shields.io/badge/Made_with-Unity-black?logo=unity)
@@ -6,6 +6,11 @@
 
 **Nostalgia Trip** is a game created during Game Jam v8 PJATK in 2025. After an intensive development process, our team proudly took **2nd place**! 🏆 
 🔗 [Read the official event recap here](https://pja.edu.pl/relacja-z-game-jam-v8/)
+
+## 🎥 Gameplay Showcase
+
+[![Nostalgia Trip Gameplay](https://img.youtube.com/vi/2ID7UplhUp0/hqdefault.jpg)](https://www.youtube.com/watch?v=2ID7UplhUp0)
+*(Click the image above to watch the gameplay video on YouTube)*
 
 ## 💡 About the Project
 
