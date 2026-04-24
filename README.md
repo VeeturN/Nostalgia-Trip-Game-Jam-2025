@@ -31,8 +31,8 @@ This project was brought to life by an amazing 5-person team who joined forces f
 * **[Dawid Juszyński (VeeturN)](https://github.com/VeeturN)** - Developer
 * **[Julia (juliapazdziorek)](https://github.com/juliapazdziorek)** - Developer
 * **[Kinga Kowalska (JackKaKi)](https://github.com/JackKaKi)** - Developer
-* **[INSERT NAME/NICKNAME OF USER 31181]** - Developer
-* **[INSERT GRAPHIC DESIGNER'S NAME]** - 2D/3D Art & Visuals 🎨
+* **Jędrzej Nowakowski** - Developer
+* **Zuzanna G** - 2D/3D Art & Visuals 🎨
 
 ## 🚀 How to Play / Run the Project
 
