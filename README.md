@@ -4,7 +4,8 @@
 ![Unity](https://img.shields.io/badge/Made_with-Unity-black?logo=unity)
 ![C#](https://img.shields.io/badge/Language-C%23-blue)
 
-**Nostalgia Trip** is a game created during Game Jam v8 PJATK in 2025. After an intensive development process, our team proudly took **2nd place**! 🏆
+**Nostalgia Trip** is a game created during Game Jam v8 PJATK in 2025. After an intensive development process, our team proudly took **2nd place**! 🏆 
+🔗 [Read the official event recap here](https://pja.edu.pl/relacja-z-game-jam-v8/)
 
 ## 💡 About the Project
 
